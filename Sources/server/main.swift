@@ -1,9 +1,24 @@
 import Swifter
+import Dispatch
 
-func main() {
-  let server = HttpServer()
-  server["/hello"] = { .ok(.htmlBody("You asked for \($0)"))  }
-  try! server.start()
+let server = HttpServer()
+server["/"] = scopes {
+  html {
+    body {
+      center {
+        img { src = "https://swift.org/assets/images/swift.svg" }
+      }
+    }
+  }
 }
+server["/files/:path"] = directoryBrowser("/")
 
-main()
+let semaphore = DispatchSemaphore(value: 0)
+do {
+  try server.start(9080, forceIPv4: true)
+  print("Server has started ( port = \(try server.port()) ). Try to connect now...")
+  semaphore.wait()
+} catch {
+  print("Server start error: \(error)")
+  semaphore.signal()
+}

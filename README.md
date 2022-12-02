@@ -1,17 +1,19 @@
 # Test Swift avec Docker
 
-Ce test sert à tester un programme Swift dans un container.
+WIP
 
-Pour le moment, il y a un problème avec URLSession sur linux.
-La lib Foundation est séparée pour les autres plateformes que Darwin, ce qui pose problème.
+Swift to test with a Docker
 
 ## Reproduce
 
 Init with `swift package init --type executable`
 
-## Launch
+## Usage
 
-`swift run server`
+```sh
+  cd Sources
+  swift run server
+```
 
 ## Build
 
