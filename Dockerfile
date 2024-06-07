@@ -1,7 +1,21 @@
-FROM swift:5.6.0
+# 1
+#FROM swift:5.10.0
+FROM amd64/swift:5.10.0
+WORKDIR /app
+COPY . .
 
-COPY . /app
+# 2
+#RUN apt-get update && apt-get install libsqlite3-dev
 
-#RUN apt-get -q install -y libcurl-devel
+# 3
+RUN swift package clean
+RUN swift build
 
-CMD swift /app/server/main.swift
+# 4
+RUN mkdir /app/bin
+RUN mv `swift build --show-bin-path` /app/bin
+
+# 5
+EXPOSE 9080
+#ENTRYPOINT ./bin/debug/Run serve --env local --hostname 0.0.0.0
+ENTRYPOINT ./bin/debug/server
